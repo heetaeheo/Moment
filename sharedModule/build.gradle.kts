@@ -1,99 +1,73 @@
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidKotlinMultiplatformLibrary)
-//    id("org.jetbrains.kotlin.native.cocoapods")
-    alias(libs.plugins.sqlDelight)
+    alias(libs.plugins.ksp)
+    // alias(libs.plugins.sqlDelight)
 }
 
 kotlin {
-    sqldelight {
-        databases {
-            create("MomentDatabase") {
-                packageName.set("com.moment.database")
-            }
-        }
-    }
+    applyDefaultHierarchyTemplate()
 
-//    cocoapods {
-//        version = "1.0.0" // ✅ 이 줄 추가
-//        summary = "Shared module for KMM app"
-//        homepage = "https://example.com"
-//        ios.deploymentTarget = "14.1"
-//        podfile = project.file("../iosApp/Podfile")
-//        framework {
-//            baseName = "shared"
-//        }
-//    }
-
-    // Target declarations - add or remove as needed below. These define
-    // which platforms this KMP module supports.
-    // See: https://kotlinlang.org/docs/multiplatform-discover-project.html#targets
     androidLibrary {
         namespace = "com.example.sharedmodule"
         compileSdk = 36
         minSdk = 30
-
-
-//        withDeviceTestBuilder {
-//            sourceSetTreeName = "test"
-//        }.configure {
-//            instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-//        }
     }
 
-    // For iOS targets, this is also where you should
-    // configure native binary output. For more information, see:
-    // https://kotlinlang.org/docs/multiplatform-build-native-binaries.html#build-xcframeworks
-
-    // A step-by-step guide on how to include this library in an XCode
-    // project can be found here:
-    // https://developer.android.com/kotlin/multiplatform/migrate
     val xcfName = "sharedModuleKit"
+    iosX64 { binaries.framework { baseName = xcfName } }
+    iosArm64 { binaries.framework { baseName = xcfName } }
+    iosSimulatorArm64 { binaries.framework { baseName = xcfName } }
 
-    iosX64 {
-        binaries.framework {
-            baseName = xcfName
-        }
-    }
-
-    iosArm64 {
-        binaries.framework {
-            baseName = xcfName
-        }
-    }
-
-    iosSimulatorArm64 {
-        binaries.framework {
-            baseName = xcfName
-        }
-    }
-
-    // Source set declarations.
-    // Declaring a target automatically creates a source set with the same name. By default, the
-    // Kotlin Gradle Plugin creates additional source sets that depend on each other, since it is
-    // common to share sources between related targets.
-    // See: https://kotlinlang.org/docs/multiplatform-hierarchy.html
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(libs.sqldelight.coroutines)
+                implementation(libs.coroutines.core)
+                implementation(libs.room.runtime)                 // Room KMP 런타임
+                implementation(libs.androidx.sqlite.bundled) // BundledSQLiteDriver
+                api(libs.koin.core)
+                implementation(libs.koin.compose)
+                implementation(libs.koin.composeVM)
             }
         }
-
         val androidMain by getting {
             dependencies {
-                implementation(libs.sqldelight.android)
+                implementation(libs.room.ktx)           // Android 전용 확장
+                implementation(libs.coroutines.android)
+                implementation(libs.koin.android)
+                implementation(libs.koin.androidx.compose)
             }
         }
 
-        // 👇 명시적으로 생성하고 그 하위가 의존하도록 설정해야 함
-        val iosMain by creating {
-            dependencies {
-                implementation(libs.sqldelight.native)
-            }
-        }
-        val iosX64Main by getting { dependsOn(iosMain) }
-        val iosArm64Main by getting { dependsOn(iosMain) }
-        val iosSimulatorArm64Main by getting { dependsOn(iosMain) }
+        // iOS 쪽에는 'room-compiler' 넣지 말 것!
+        val iosX64Main by getting { }
+        val iosArm64Main by getting { }
+        val iosSimulatorArm64Main by getting { }
     }
 }
+
+// --- KSP: 타깃별로 Room Compiler 연결 ---
+dependencies {
+    add("kspAndroid", libs.room.compiler)
+    add("kspIosArm64", libs.room.compiler)
+    add("kspIosX64", libs.room.compiler)
+    add("kspIosSimulatorArm64", libs.room.compiler)
+}
+
+// (선택) Room 스키마 디렉터리 설정
+ksp {
+    // schema 출력 경로
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
+
+// (선택) SQLDelight를 같이 쓴다면 아래처럼 유지/수정
+/*
+sqldelight {
+    databases {
+        create("MomentSqldelightDatabase") {
+            packageName.set("com.example.data.sqldelight")
+            schemaOutputDirectory.set(file("src/commonMain/sqldelight/databases"))
+        }
+    }
+}
+*/
