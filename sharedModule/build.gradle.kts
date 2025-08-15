@@ -12,7 +12,7 @@ kotlin {
     androidLibrary {
         namespace = "com.example.sharedmodule"
         compileSdk = 35
-        minSdk = 30
+        minSdk = 28
     }
 
     val xcfName = "sharedModuleKit"
