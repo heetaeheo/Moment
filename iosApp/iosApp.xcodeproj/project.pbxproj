@@ -11,6 +11,7 @@
 		AD9075EC2E44B87500F3820D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD9075EB2E44B87500F3820D /* ContentView.swift */; };
 		AD9075EE2E44B87600F3820D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD9075ED2E44B87600F3820D /* Assets.xcassets */; };
 		AD9075F12E44B87600F3820D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD9075F02E44B87600F3820D /* Preview Assets.xcassets */; };
+		ADD672CF2E4E44D900BA8EAE /* iosApp.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = ADD672CE2E4E44D800BA8EAE /* iosApp.xcworkspace */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +20,7 @@
 		AD9075EB2E44B87500F3820D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		AD9075ED2E44B87600F3820D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AD9075F02E44B87600F3820D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		ADD672CE2E4E44D800BA8EAE /* iosApp.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = iosApp.xcworkspace; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +53,7 @@
 		AD9075E82E44B87500F3820D /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				ADD672CE2E4E44D800BA8EAE /* iosApp.xcworkspace */,
 				AD9075E92E44B87500F3820D /* iosAppApp.swift */,
 				AD9075EB2E44B87500F3820D /* ContentView.swift */,
 				AD9075ED2E44B87600F3820D /* Assets.xcassets */,
@@ -125,6 +128,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ADD672CF2E4E44D900BA8EAE /* iosApp.xcworkspace in Resources */,
 				AD9075F12E44B87600F3820D /* Preview Assets.xcassets in Resources */,
 				AD9075EE2E44B87600F3820D /* Assets.xcassets in Resources */,
 			);

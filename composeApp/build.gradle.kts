@@ -30,6 +30,10 @@ kotlin {
     
     sourceSets {
         androidMain.dependencies {
+            implementation(project(":sharedModule"))
+            implementation(libs.koin.core)
+            implementation(libs.koin.androidx.compose)
+            implementation(libs.koin.android)
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
         }
