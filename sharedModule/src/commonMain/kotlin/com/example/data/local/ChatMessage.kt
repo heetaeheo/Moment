@@ -40,12 +40,11 @@ interface ChatMessageDao {
 }
 
 @Database(entities = [ChatMessageEntity::class], version = 1)
-@ConstructedBy(AppDatabaseConstructor::class)
 abstract class MomentDatabase : RoomDatabase() {
     abstract fun chatMessageDao(): ChatMessageDao
 }
-
-@Suppress("KotlinNoActualForExpect")
-expect object AppDatabaseConstructor : RoomDatabaseConstructor<MomentDatabase> {
-    override fun initialize(): MomentDatabase
-}
+//
+//@Suppress("KotlinNoActualForExpect")
+//expect object AppDatabaseConstructor : RoomDatabaseConstructor<MomentDatabase> {
+//    override fun initialize(): MomentDatabase
+//}

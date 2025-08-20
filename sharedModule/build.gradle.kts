@@ -1,8 +1,9 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidKotlinMultiplatformLibrary)
     alias(libs.plugins.ksp)
-    // alias(libs.plugins.sqlDelight)
 }
 
 kotlin {
@@ -10,14 +11,30 @@ kotlin {
 
     androidLibrary {
         namespace = "com.example.sharedmodule"
-        compileSdk = 36
-        minSdk = 30
+        compileSdk = 35
+        minSdk = 28
     }
 
     val xcfName = "sharedModuleKit"
-    iosX64 { binaries.framework { baseName = xcfName } }
-    iosArm64 { binaries.framework { baseName = xcfName } }
-    iosSimulatorArm64 { binaries.framework { baseName = xcfName } }
+    val xcf = XCFramework(xcfName)
+    iosX64 {
+        binaries.framework {
+            baseName = xcfName
+            xcf.add(this)
+        }
+    }
+    iosArm64 {
+        binaries.framework {
+            baseName = xcfName
+            xcf.add(this)
+        }
+    }
+    iosSimulatorArm64 {
+        binaries.framework {
+            baseName = xcfName
+            xcf.add(this)
+        }
+    }
 
     sourceSets {
         val commonMain by getting {
@@ -28,6 +45,7 @@ kotlin {
                 api(libs.koin.core)
                 implementation(libs.koin.compose)
                 implementation(libs.koin.composeVM)
+                implementation(libs.kotlinx.datetime)
             }
         }
         val androidMain by getting {
@@ -59,15 +77,3 @@ ksp {
     // schema 출력 경로
     arg("room.schemaLocation", "$projectDir/schemas")
 }
-
-// (선택) SQLDelight를 같이 쓴다면 아래처럼 유지/수정
-/*
-sqldelight {
-    databases {
-        create("MomentSqldelightDatabase") {
-            packageName.set("com.example.data.sqldelight")
-            schemaOutputDirectory.set(file("src/commonMain/sqldelight/databases"))
-        }
-    }
-}
-*/
