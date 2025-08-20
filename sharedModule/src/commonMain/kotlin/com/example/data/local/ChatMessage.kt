@@ -1,6 +1,5 @@
 package com.example.data.local
 
-import androidx.room.ConstructedBy
 import androidx.room.Dao
 import androidx.room.Database
 import androidx.room.Entity
@@ -8,15 +7,11 @@ import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.RoomDatabase
-import androidx.room.RoomDatabaseConstructor
-
-enum class MessageType {
-    USER, GEMINI
-}
+import com.example.domain.type.MessageType
 
 @Entity(tableName = "chat_messages")
 data class ChatMessageEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0L,
     val message: String,
     val timestamp: Long,
     val type: MessageType,
