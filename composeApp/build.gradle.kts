@@ -36,6 +36,7 @@ kotlin {
             implementation(libs.koin.android)
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.kotlinx.collections.immutable)
         }
         commonMain.dependencies {
             implementation(compose.runtime)

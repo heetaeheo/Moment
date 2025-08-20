@@ -3,8 +3,12 @@ package com.example.data.repository
 import com.example.core.DateTimeProvider
 import com.example.data.local.ChatMessageDao
 import com.example.data.local.ChatMessageEntity
-import com.example.data.local.MessageType
+import com.example.domain.mapper.toChatModel
+import com.example.domain.model.ChatModel
 import com.example.domain.repository.ChatRepository
+import com.example.domain.type.MessageType
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalTime::class)
@@ -39,8 +43,8 @@ class ChatRepositoryImpl(
         )
     }
 
-    override suspend fun getMessages(dateKey: String): List<ChatMessageEntity> {
-        return dao.selectByDate(dateKey)
+    override suspend fun getMessages(dateKey: String): ImmutableList<ChatModel> {
+        return dao.selectByDate(dateKey).map { it.toChatModel() }.toImmutableList()
     }
 
     override suspend fun clearAll() {
