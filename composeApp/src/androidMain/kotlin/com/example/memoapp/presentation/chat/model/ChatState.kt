@@ -6,6 +6,7 @@ import kotlinx.collections.immutable.persistentListOf
 
 data class ChatState(
     val dateKey: String = "",
+    val todayKey: String = "",
     val dateFormatted: String = "",
     val chatModelList: ImmutableList<ChatModel> = persistentListOf(),
     val isMenuOpen: Boolean = false

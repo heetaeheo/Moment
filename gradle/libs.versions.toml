@@ -9,14 +9,16 @@ androidx-core = "1.16.0"
 androidx-espresso = "3.6.1"
 androidx-lifecycle = "2.9.1"
 androidx-testExt = "1.2.1"
+coilNetworkOkhttp = "3.3.0"
 composeMultiplatform = "1.8.2"
 junit = "4.13.2"
 koinCore = "3.6.0-Beta4"
 koin-compose = "1.2.0-Beta4"
 kotlin = "2.1.0"
-kotlinStdlib = "2.2.0"
+kotlinStdlib = "2.1.0"
 kotlinxCollectionsImmutable = "0.4.0"
 kotlinxDatetime = "0.6.0"
+navigationCompose = "2.9.3"
 runner = "1.5.2"
 core = "1.5.0"
 sqldelight = "2.1.0"
@@ -25,9 +27,13 @@ sqlite = "2.5.2"
 ksp = "2.1.0-1.0.29"
 coroutines = "1.7.3"
 sqliteBundled = "2.5.2"
+kotlinxSerialization = "2.2.10"
 
 [libraries]
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqliteBundled" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilNetworkOkhttp" }
+coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilNetworkOkhttp" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinCore" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinCore" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koinCore" }
@@ -68,3 +74,4 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 androidKotlinMultiplatformLibrary = { id = "com.android.kotlin.multiplatform.library", version.ref = "agp" }
 sqlDelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

@@ -5,11 +5,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.core.DateTimeProvider
 import com.example.domain.repository.ChatRepository
 import com.example.memoapp.presentation.chat.model.ChatAction
 import com.example.memoapp.presentation.chat.model.ChatEvent
 import com.example.memoapp.presentation.chat.model.ChatState
+import com.example.memoapp.presentation.util.toDateKey
+import com.example.memoapp.presentation.util.toLocalDateOrNull
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -35,6 +38,16 @@ class ChatViewModel(
         }
     }
 
+    fun loadPreviousDate() {
+        val prevKey = uiState.dateKey.toLocalDateOrNull()?.minusDays(1)?.toDateKey() ?: return
+        onAction(ChatAction.ChangeDate(prevKey))
+    }
+
+    fun loadNextDate() {
+        val nextKey = uiState.dateKey.toLocalDateOrNull()?.plusDays(1)?.toDateKey() ?: return
+        onAction(ChatAction.ChangeDate(nextKey))
+    }
+
     private fun loadInitialMessages() {
         viewModelScope.launch {
             val todayKey = dateTimeProvider.currentDateKey()
@@ -42,6 +55,7 @@ class ChatViewModel(
             uiState = uiState.copy(
                 chatModelList = messages,
                 dateKey = todayKey,
+                todayKey = todayKey,
                 dateFormatted = formatDateForUi(todayKey)
             )
         }
@@ -57,6 +71,13 @@ class ChatViewModel(
 
     private fun loadMessageForDate(dateKey: String) {
         viewModelScope.launch {
+            val todayKey = dateTimeProvider.currentDateKey()
+
+            if (dateKey > todayKey) {
+                eventChannel.send(ChatEvent.ShowToastMessage("미래의 메모장은 가져올 수 없습니다."))
+                return@launch
+            }
+
             val messages = chatRepository.getMessages(dateKey)
             uiState = uiState.copy(
                 chatModelList = messages,
